@@ -1,0 +1,247 @@
+Grammaire
+
+    0 $accept: e $end
+
+    1 e: e1 PV e
+    2  | e1 PV
+
+    3 e1: e1 PLUS e2
+    4   | e1 MOINS e2
+    5   | e2
+
+    6 e2: e2 MULT e3
+    7   | e2 DIV e3
+    8   | e3
+
+    9 e3: PO e1 PF
+   10   | ENTIER
+
+
+Terminaux, suivis des règles où ils apparaissent
+
+    $end (0) 0
+    error (256)
+    PLUS (258) 3
+    MOINS (259) 4
+    MULT (260) 6
+    DIV (261) 7
+    PO (262) 9
+    PF (263) 9
+    ENTIER (264) 10
+    PV (265) 1 2
+
+
+Non-terminaux, suivis des règles où ils apparaissent
+
+    $accept (11)
+        à gauche: 0
+    e (12)
+        à gauche: 1 2
+        à droite: 0 1
+    e1 (13)
+        à gauche: 3 4 5
+        à droite: 1 2 3 4 9
+    e2 (14)
+        à gauche: 6 7 8
+        à droite: 3 4 5 6 7
+    e3 (15)
+        à gauche: 9 10
+        à droite: 6 7 8
+
+
+État 0
+
+    0 $accept: . e $end
+
+    PO      décalage et aller à l'état 1
+    ENTIER  décalage et aller à l'état 2
+
+    e   aller à l'état 3
+    e1  aller à l'état 4
+    e2  aller à l'état 5
+    e3  aller à l'état 6
+
+
+État 1
+
+    9 e3: PO . e1 PF
+
+    PO      décalage et aller à l'état 1
+    ENTIER  décalage et aller à l'état 2
+
+    e1  aller à l'état 7
+    e2  aller à l'état 5
+    e3  aller à l'état 6
+
+
+État 2
+
+   10 e3: ENTIER .
+
+    $défaut  réduction par utilisation de la règle 10 (e3)
+
+
+État 3
+
+    0 $accept: e . $end
+
+    $end  décalage et aller à l'état 8
+
+
+État 4
+
+    1 e: e1 . PV e
+    2  | e1 . PV
+    3 e1: e1 . PLUS e2
+    4   | e1 . MOINS e2
+
+    PLUS   décalage et aller à l'état 9
+    MOINS  décalage et aller à l'état 10
+    PV     décalage et aller à l'état 11
+
+
+État 5
+
+    5 e1: e2 .
+    6 e2: e2 . MULT e3
+    7   | e2 . DIV e3
+
+    MULT  décalage et aller à l'état 12
+    DIV   décalage et aller à l'état 13
+
+    $défaut  réduction par utilisation de la règle 5 (e1)
+
+
+État 6
+
+    8 e2: e3 .
+
+    $défaut  réduction par utilisation de la règle 8 (e2)
+
+
+État 7
+
+    3 e1: e1 . PLUS e2
+    4   | e1 . MOINS e2
+    9 e3: PO e1 . PF
+
+    PLUS   décalage et aller à l'état 9
+    MOINS  décalage et aller à l'état 10
+    PF     décalage et aller à l'état 14
+
+
+État 8
+
+    0 $accept: e $end .
+
+    $défaut  accepter
+
+
+État 9
+
+    3 e1: e1 PLUS . e2
+
+    PO      décalage et aller à l'état 1
+    ENTIER  décalage et aller à l'état 2
+
+    e2  aller à l'état 15
+    e3  aller à l'état 6
+
+
+État 10
+
+    4 e1: e1 MOINS . e2
+
+    PO      décalage et aller à l'état 1
+    ENTIER  décalage et aller à l'état 2
+
+    e2  aller à l'état 16
+    e3  aller à l'état 6
+
+
+État 11
+
+    1 e: e1 PV . e
+    2  | e1 PV .
+
+    PO      décalage et aller à l'état 1
+    ENTIER  décalage et aller à l'état 2
+
+    $défaut  réduction par utilisation de la règle 2 (e)
+
+    e   aller à l'état 17
+    e1  aller à l'état 4
+    e2  aller à l'état 5
+    e3  aller à l'état 6
+
+
+État 12
+
+    6 e2: e2 MULT . e3
+
+    PO      décalage et aller à l'état 1
+    ENTIER  décalage et aller à l'état 2
+
+    e3  aller à l'état 18
+
+
+État 13
+
+    7 e2: e2 DIV . e3
+
+    PO      décalage et aller à l'état 1
+    ENTIER  décalage et aller à l'état 2
+
+    e3  aller à l'état 19
+
+
+État 14
+
+    9 e3: PO e1 PF .
+
+    $défaut  réduction par utilisation de la règle 9 (e3)
+
+
+État 15
+
+    3 e1: e1 PLUS e2 .
+    6 e2: e2 . MULT e3
+    7   | e2 . DIV e3
+
+    MULT  décalage et aller à l'état 12
+    DIV   décalage et aller à l'état 13
+
+    $défaut  réduction par utilisation de la règle 3 (e1)
+
+
+État 16
+
+    4 e1: e1 MOINS e2 .
+    6 e2: e2 . MULT e3
+    7   | e2 . DIV e3
+
+    MULT  décalage et aller à l'état 12
+    DIV   décalage et aller à l'état 13
+
+    $défaut  réduction par utilisation de la règle 4 (e1)
+
+
+État 17
+
+    1 e: e1 PV e .
+
+    $défaut  réduction par utilisation de la règle 1 (e)
+
+
+État 18
+
+    6 e2: e2 MULT e3 .
+
+    $défaut  réduction par utilisation de la règle 6 (e2)
+
+
+État 19
+
+    7 e2: e2 DIV e3 .
+
+    $défaut  réduction par utilisation de la règle 7 (e2)

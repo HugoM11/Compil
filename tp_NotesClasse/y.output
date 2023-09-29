@@ -1,0 +1,290 @@
+Grammaire
+
+    0 $accept: ligne1 $end
+
+    1 ligne1: ENTIER RL liste
+
+    2 liste: eleve RL liste
+    3      | eleve
+
+    4 eleve: nom prenom date_naiss liste_note
+
+    5 nom: SL
+
+    6 prenom: SL TIRET prenom
+    7       | SL
+
+    8 date_naiss: ENTIER SLASH ENTIER SLASH ENTIER
+
+    9 liste_note: PO ENTIER VIRGULE ENTIER PF liste_note
+   10           | PO ENTIER VIRGULE ENTIER PF
+
+
+Terminaux, suivis des règles où ils apparaissent
+
+    $end (0) 0
+    error (256)
+    RL (258) 1 2
+    TIRET (259) 6
+    SL (260) 5 6 7
+    SLASH (261) 8
+    PO (262) 9 10
+    PF (263) 9 10
+    ENTIER (264) 1 8 9 10
+    VIRGULE (265) 9 10
+
+
+Non-terminaux, suivis des règles où ils apparaissent
+
+    $accept (11)
+        à gauche: 0
+    ligne1 (12)
+        à gauche: 1
+        à droite: 0
+    liste (13)
+        à gauche: 2 3
+        à droite: 1 2
+    eleve (14)
+        à gauche: 4
+        à droite: 2 3
+    nom (15)
+        à gauche: 5
+        à droite: 4
+    prenom (16)
+        à gauche: 6 7
+        à droite: 4 6
+    date_naiss (17)
+        à gauche: 8
+        à droite: 4
+    liste_note (18)
+        à gauche: 9 10
+        à droite: 4 9
+
+
+État 0
+
+    0 $accept: . ligne1 $end
+
+    ENTIER  décalage et aller à l'état 1
+
+    ligne1  aller à l'état 2
+
+
+État 1
+
+    1 ligne1: ENTIER . RL liste
+
+    RL  décalage et aller à l'état 3
+
+
+État 2
+
+    0 $accept: ligne1 . $end
+
+    $end  décalage et aller à l'état 4
+
+
+État 3
+
+    1 ligne1: ENTIER RL . liste
+
+    SL  décalage et aller à l'état 5
+
+    liste  aller à l'état 6
+    eleve  aller à l'état 7
+    nom    aller à l'état 8
+
+
+État 4
+
+    0 $accept: ligne1 $end .
+
+    $défaut  accepter
+
+
+État 5
+
+    5 nom: SL .
+
+    $défaut  réduction par utilisation de la règle 5 (nom)
+
+
+État 6
+
+    1 ligne1: ENTIER RL liste .
+
+    $défaut  réduction par utilisation de la règle 1 (ligne1)
+
+
+État 7
+
+    2 liste: eleve . RL liste
+    3      | eleve .
+
+    RL  décalage et aller à l'état 9
+
+    $défaut  réduction par utilisation de la règle 3 (liste)
+
+
+État 8
+
+    4 eleve: nom . prenom date_naiss liste_note
+
+    SL  décalage et aller à l'état 10
+
+    prenom  aller à l'état 11
+
+
+État 9
+
+    2 liste: eleve RL . liste
+
+    SL  décalage et aller à l'état 5
+
+    liste  aller à l'état 12
+    eleve  aller à l'état 7
+    nom    aller à l'état 8
+
+
+État 10
+
+    6 prenom: SL . TIRET prenom
+    7       | SL .
+
+    TIRET  décalage et aller à l'état 13
+
+    $défaut  réduction par utilisation de la règle 7 (prenom)
+
+
+État 11
+
+    4 eleve: nom prenom . date_naiss liste_note
+
+    ENTIER  décalage et aller à l'état 14
+
+    date_naiss  aller à l'état 15
+
+
+État 12
+
+    2 liste: eleve RL liste .
+
+    $défaut  réduction par utilisation de la règle 2 (liste)
+
+
+État 13
+
+    6 prenom: SL TIRET . prenom
+
+    SL  décalage et aller à l'état 10
+
+    prenom  aller à l'état 16
+
+
+État 14
+
+    8 date_naiss: ENTIER . SLASH ENTIER SLASH ENTIER
+
+    SLASH  décalage et aller à l'état 17
+
+
+État 15
+
+    4 eleve: nom prenom date_naiss . liste_note
+
+    PO  décalage et aller à l'état 18
+
+    liste_note  aller à l'état 19
+
+
+État 16
+
+    6 prenom: SL TIRET prenom .
+
+    $défaut  réduction par utilisation de la règle 6 (prenom)
+
+
+État 17
+
+    8 date_naiss: ENTIER SLASH . ENTIER SLASH ENTIER
+
+    ENTIER  décalage et aller à l'état 20
+
+
+État 18
+
+    9 liste_note: PO . ENTIER VIRGULE ENTIER PF liste_note
+   10           | PO . ENTIER VIRGULE ENTIER PF
+
+    ENTIER  décalage et aller à l'état 21
+
+
+État 19
+
+    4 eleve: nom prenom date_naiss liste_note .
+
+    $défaut  réduction par utilisation de la règle 4 (eleve)
+
+
+État 20
+
+    8 date_naiss: ENTIER SLASH ENTIER . SLASH ENTIER
+
+    SLASH  décalage et aller à l'état 22
+
+
+État 21
+
+    9 liste_note: PO ENTIER . VIRGULE ENTIER PF liste_note
+   10           | PO ENTIER . VIRGULE ENTIER PF
+
+    VIRGULE  décalage et aller à l'état 23
+
+
+État 22
+
+    8 date_naiss: ENTIER SLASH ENTIER SLASH . ENTIER
+
+    ENTIER  décalage et aller à l'état 24
+
+
+État 23
+
+    9 liste_note: PO ENTIER VIRGULE . ENTIER PF liste_note
+   10           | PO ENTIER VIRGULE . ENTIER PF
+
+    ENTIER  décalage et aller à l'état 25
+
+
+État 24
+
+    8 date_naiss: ENTIER SLASH ENTIER SLASH ENTIER .
+
+    $défaut  réduction par utilisation de la règle 8 (date_naiss)
+
+
+État 25
+
+    9 liste_note: PO ENTIER VIRGULE ENTIER . PF liste_note
+   10           | PO ENTIER VIRGULE ENTIER . PF
+
+    PF  décalage et aller à l'état 26
+
+
+État 26
+
+    9 liste_note: PO ENTIER VIRGULE ENTIER PF . liste_note
+   10           | PO ENTIER VIRGULE ENTIER PF .
+
+    PO  décalage et aller à l'état 18
+
+    $défaut  réduction par utilisation de la règle 10 (liste_note)
+
+    liste_note  aller à l'état 27
+
+
+État 27
+
+    9 liste_note: PO ENTIER VIRGULE ENTIER PF liste_note .
+
+    $défaut  réduction par utilisation de la règle 9 (liste_note)
